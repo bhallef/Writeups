@@ -1,5 +1,12 @@
 # THM - Agent Sudo
-![logo du challenge](logo.png)
+<p align="center">
+  <img width="300" height="300" src="logo.png">
+</p>
+
+Nom | Description | Difficulté | Lien
+----|-------------|------------|-----
+Agent-sudo | You found a secret server located under the deep sea. Your task is to hack inside the server and reveal the truth. | Easy 🟢| [THM](https://tryhackme.com/room/agentsudoctf)
+
 Enumeration de port :
 ```txt
 nmap -A <ip>
