@@ -7,7 +7,7 @@ Description | Difficulté | Lien
 -------------|------------|-----
 You found a secret server located under the deep sea. Your task is to hack inside the server and reveal the truth. | Easy 🟢| [THM](https://tryhackme.com/room/agentsudoctf)
 
-Enumeration de port :
+Énumération de port :
 ```txt
 nmap -A <ip>
 Starting Nmap 7.93 ( https://nmap.org ) at 2023-04-01 05:12 EDT
@@ -42,12 +42,12 @@ Use your own codename as user-agent to access the site.
 From,
 Agent R
 ```
-Il peut être déduis de ce message qu'il nous faut renseigner un user-agent différents pour afficher de nouvelles informations. L'user-agent doit correspondre à un nom de code. En regardant la signature de l'agent on remarque qu'il se nomme "Agent R" donc son nom de code est R.
+Il peut être déduit de ce message qu'il nous faut modifier notre user-agent pour afficher de nouvelles informations. L'user-agent doit correspondre à un nom de code. En regardant la signature de l'agent, on remarque qu'il se nomme "Agent R" donc son nom de code est R.
 
 > **Note** 
 > Deuxième question : How you redirect yourself to a secret page ? ``user-agent``
 
-En essayer les 26 lettres de l'alphabet avec l'aide du plugin [User-Agent Switcher](https://mybrowseraddon.com/useragent-switcher.html), il y a un nouveau message qui apparait avec l'user-agent "C".
+En essayant les 26 lettres de l'alphabet avec l'aide du plugin [User-Agent Switcher](https://mybrowseraddon.com/useragent-switcher.html), il y a un nouveau message qui apparait avec l'user-agent "C".
 
 Le message est le suivant :
 ```txt
@@ -60,7 +60,7 @@ Agent R
 > **Note** 
 > Troisième question : What is the agent name ? ``chris``
 
-Le message indique que le mot de passe de Chris est faible. Il faut donc le brute force, à l'aide de la commande suivante :
+Le message indique que le mot de passe de Chris est faible. Il faut donc brute force, à l'aide de la commande suivante :
 ```bash
 hydra -l chris -P /usr/share/wordlists/rockyou.txt ftp://<ip>
 ```
@@ -68,14 +68,14 @@ hydra -l chris -P /usr/share/wordlists/rockyou.txt ftp://<ip>
 > **Note**
 > Quatrième question : FTP password ``crystal``
 
-Grace à ce mot de passe, il est possible de se connecter au service ftp.
-A la racine il y a 3 fichiers.
+Grâce à ce mot de passe, il est possible de se connecter au service ftp.
+À la racine, il y a 3 fichiers.
 ```txt
 cute-alien.jpg
 cutie.png
 To_agentJ.txt
 ```
-Dans le fichier texte, il y a écrit :
+Dans le fichier texte, il a écrit :
 ```txt
 Dear agent J,
 
@@ -85,7 +85,7 @@ From,
 Agent C
 ```
 
-Donc les informations importantes sont stocké dans les photos. Grace à Binwalk, de l'image cutie.png peut être extrait un fichier zip et cracké le mot de passe du Zip
+Donc les informations importantes sont stockées dans les photos. Grâce à Binwalk, de l'image cutie.png peut être extrait un fichier zip et cracké le mot de passe du Zip
 ```bash
 binwalk --extract cutie.png
 zip2john <fichierzip> > hash.txt
@@ -98,13 +98,11 @@ john hash.txt
 On a maintenant un fichier texte qui à un message caché en base64 :
 ```txt
 QXJlYTUx
-  =
-Area51
 ```
 > **Note**
 > Sixième question : steg password ``Area51``
 
-Lorsque l'on utilise steghide sur le fichier cute-alien.jpg, celui ci demande un mot de passe. En entrant ``Area51`` nous avons message.txt qui nous est révelé.
+Lorsque l'on utilise steghide sur le fichier cute-alien.jpg, celui-ci demande un mot de passe. En entrant ``Area51`` nous avons message.txt qui nous est révélé.
 
 ```txt
 Hi james,
@@ -124,12 +122,12 @@ chris
 > Huitième question : SSH password ``hackerrules!``
 
 La dernière étape est de se connecter en SSH avec l'utilisateur james.
-A la racine du home de james, il y a une photo qu'il va falloir télécharger et le flag user.
+À la racine du home de james, il y a une photo qu'il va falloir télécharger et le flag user.
 
 > **Note**
 > Neuvième question : What is the user flag? ``b03d975e8c92a7c04146cfa7a5a313c7``
 
-Avec la photo Alien_autopsy.jpg, il faut faire du reverse image search pour tomber sur l'évenement qu'il immortalise.
+Avec la photo Alien_autopsy.jpg, il faut faire du reverse image search pour tomber sur l'événement qu'il immortalise.
 
 > **Note**
 > Dixième question : What is the incident of the photo called ? ``Roswell alien autopsy``
@@ -142,7 +140,7 @@ En regardant les droits sudo, nous avons cette règle :
 > **Note**
 > Onzième question : CVE number for the escalation ``CVE-2019-14287``
 
-En tapant la commande suivante, nous accedons à l'utilisateur root :
+En tapant la commande suivante, nous accédons à l'utilisateur root :
 ```bash
 sudo -u#-1 /bin/bash
 ```
