@@ -3,9 +3,9 @@
   <img width="300" height="300" src="logo.png">
 </p>
 
-Nom | Description | Difficulté | Lien
-----|-------------|------------|-----
-Agent-sudo | You found a secret server located under the deep sea. Your task is to hack inside the server and reveal the truth. | Easy 🟢| [THM](https://tryhackme.com/room/agentsudoctf)
+Description | Difficulté | Lien
+-------------|------------|-----
+You found a secret server located under the deep sea. Your task is to hack inside the server and reveal the truth. | Easy 🟢| [THM](https://tryhackme.com/room/agentsudoctf)
 
 Enumeration de port :
 ```txt
@@ -29,8 +29,42 @@ Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 11.11 seconds
 ```
+
 Il y a 3 ports ouverts, le port 21 qui héberge un FTP, le port 22 pour le SSH et le port 80 avec un serveur Web.
 
-J'essai la connexion au FTP avec anonymous mais sans succès.
+> **Note**
+> Première question : How many open ports ? ``3``
 
-La page html nous indiques qu'avec un user-agent différent on peut avoir accès à des informations supplémentaires. Le user-agent qui nous affichera des informations différentes correspond au nom de code de l'agent.
+Sur la page d'accueil du site, il y a le message suivant :
+```
+Dear agents,
+Use your own codename as user-agent to access the site.
+From,
+Agent R
+```
+Il peut être déduis de ce message qu'il nous faut renseigner un user-agent différents pour afficher de nouvelles informations. L'user-agent doit correspondre à un nom de code. En regardant la signature de l'agent on remarque qu'il se nomme "Agent R" donc son nom de code est R.
+
+> **Note** 
+> Deuxième question : How you redirect yourself to a secret page ? ``user-agent``
+
+En essayer les 26 lettres de l'alphabet avec l'aide du plugin [User-Agent Switcher](https://mybrowseraddon.com/useragent-switcher.html), il y a un nouveau message qui apparait avec l'user-agent "C".
+
+Le message est le suivant :
+```txt
+Attention chris,
+Do you still remember our deal? Please tell agent J about the stuff ASAP. Also, change your god damn password, is weak!
+From,
+Agent R
+```
+
+> **Note** 
+> Troisième question : What is the agent name ? ``chris``
+
+Le message indique que le mot de passe de Chris est faible. Il faut donc le brute force, à l'aide de la commande suivante :
+```bash
+hydra -l chris -P /usr/share/wordlists/rockyou.txt ftp://<ip>
+```
+
+> **Note**
+> Quatrième question : FTP password ``crystal``
+
