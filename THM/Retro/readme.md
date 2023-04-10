@@ -1,4 +1,4 @@
-# THM - Bounty Hacker
+# THM - Retro
 <p align="center">
   <img width="300" height="" src="./img/logo.jpeg">
 </p>
